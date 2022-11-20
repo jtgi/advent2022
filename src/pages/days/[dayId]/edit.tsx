@@ -10,7 +10,7 @@ import Layout from "src/core/layouts/Layout";
 import getDay from "src/days/queries/getDay";
 import updateDay from "src/days/mutations/updateDay";
 import { DayForm, FORM_ERROR } from "src/days/components/DayForm";
-import { CreateDay, UpdateDay } from "../validations";
+import { CreateDay, UpdateDay } from "../../../days/validations";
 
 export const EditDay = () => {
   const router = useRouter();

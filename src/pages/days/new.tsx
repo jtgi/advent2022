@@ -5,7 +5,7 @@ import { useMutation } from "@blitzjs/rpc";
 import Layout from "src/core/layouts/Layout";
 import createDay from "src/days/mutations/createDay";
 import { DayForm, FORM_ERROR } from "src/days/components/DayForm";
-import { CreateDay } from "./validations";
+import { CreateDay } from "../../days/validations";
 
 const NewDayPage = () => {
   const router = useRouter();

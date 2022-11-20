@@ -1,6 +1,6 @@
 import { resolver } from "@blitzjs/rpc";
 import db from "db";
-import { UpdateDay } from "src/pages/days/validations";
+import { UpdateDay } from "src/days/validations";
 
 export default resolver.pipe(
   resolver.zod(UpdateDay),
