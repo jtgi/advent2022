@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable jsx-a11y/alt-text */
 import { Suspense } from "react"
 import Image from "next/image"
 import Link from "next/link"
@@ -5,13 +7,23 @@ import Layout from "src/core/layouts/Layout"
 import { useCurrentUser } from "src/users/hooks/useCurrentUser"
 import logout from "src/auth/mutations/logout"
 import logo from "public/logo.png"
-import { useMutation } from "@blitzjs/rpc"
+import { useMutation, useQuery } from "@blitzjs/rpc"
 import { Routes, BlitzPage } from "@blitzjs/next"
+import getDays from "src/days/queries/getDays"
+import { gSSP } from "src/blitz-server"
+import ipLookup from 'request-ip';
+import geoip from 'geoip-lite';
+import moment from 'moment-timezone';
+import Snowfall from "react-snowfall"
+import Countdown from "react-countdown"
 
-/*
- * This file is just for a pleasant getting started page for your new app.
- * You can delete everything in here and start from scratch if you like.
- */
+const Days = ({ days }) => {
+  return (
+    <ul>
+      {days.map(day => (<li key={day.id}>{day.coffee}</li>))}
+    </ul>
+  )
+}
 
 const UserInfo = () => {
   const currentUser = useCurrentUser()
@@ -53,220 +65,161 @@ const UserInfo = () => {
   }
 }
 
-const Home: BlitzPage = () => {
+export const getServerSideProps = gSSP<any, any, { days: Day[] | [], ready: boolean }>(async ({ req, params, ctx }) => {
+  const ip = process.env.FAKE_IP || ipLookup.getClientIp(req);
+  const tz = ip && geoip.lookup(ip)?.timezone || 'America/Los_Angeles';
+
+  const start = moment.tz(process.env.BEGIN_DATE, tz);
+  const today = process.env.FAKE_TODAY ? moment.tz(process.env.FAKE_TODAY, tz) : moment.tz(tz);
+  const ready = today.isSameOrAfter(start);
+
+  if (!ready) {
+    return {
+      props: {
+        days: [],
+        ready: false
+      }
+    }
+  }
+
+  const { days } = await getDays({
+    where: {
+      AND: [
+        { date: { gte: start.toDate() } },
+        { date: { lte: today.toDate() } }
+      ],
+    }
+  }, ctx);
+
+  return {
+    props: {
+      days,
+      ready
+    }
+  }
+})
+
+const ComingSoon = () => {
   return (
-    <Layout title="Home">
-      <div className="container">
-        <main>
-          <div className="logo">
-            <Image src={`${logo.src}`} alt="blitzjs" width="256px" height="118px" layout="fixed" />
-          </div>
-          <p>
-            <strong>Congrats!</strong> Your app is ready, including user sign-up and log-in.
-          </p>
-          <div className="buttons" style={{ marginTop: "1rem", marginBottom: "1rem" }}>
-            <Suspense fallback="Loading...">
-              <UserInfo />
-            </Suspense>
-          </div>
-          <p>
-            <strong>
-              To add a new model to your app, <br />
-              run the following in your terminal:
-            </strong>
-          </p>
-          <pre>
-            <code>blitz generate all project name:string</code>
-          </pre>
-          <div style={{ marginBottom: "1rem" }}>(And select Yes to run prisma migrate)</div>
-          <div>
-            <p>
-              Then <strong>restart the server</strong>
-            </p>
-            <pre>
-              <code>Ctrl + c</code>
-            </pre>
-            <pre>
-              <code>blitz dev</code>
-            </pre>
-            <p>
-              and go to{" "}
-              <Link href="/projects">
-                <a>/projects</a>
-              </Link>
-            </p>
-          </div>
-          <div className="buttons" style={{ marginTop: "5rem" }}>
-            <a
-              className="button"
-              href="https://blitzjs.com/docs/getting-started?utm_source=blitz-new&utm_medium=app-template&utm_campaign=blitz-new"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Documentation
-            </a>
-            <a
-              className="button-outline"
-              href="https://github.com/blitz-js/blitz"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Github Repo
-            </a>
-            <a
-              className="button-outline"
-              href="https://discord.blitzjs.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Discord Community
-            </a>
-          </div>
-        </main>
-
-        <footer>
-          <a
-            href="https://blitzjs.com?utm_source=blitz-new&utm_medium=app-template&utm_campaign=blitz-new"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Powered by Blitz.js
-          </a>
-        </footer>
-
-        <style jsx global>{`
-          @import url("https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@300;700&display=swap");
-
-          html,
-          body {
-            padding: 0;
-            margin: 0;
-            font-family: "Libre Franklin", -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-              Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-          }
-
-          * {
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            box-sizing: border-box;
-          }
-          .container {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-          }
-
-          main {
-            padding: 5rem 0;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-          }
-
-          main p {
-            font-size: 1.2rem;
-          }
-
-          p {
-            text-align: center;
-          }
-
-          footer {
-            width: 100%;
-            height: 60px;
-            border-top: 1px solid #eaeaea;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #45009d;
-          }
-
-          footer a {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-          }
-
-          footer a {
-            color: #f4f4f4;
-            text-decoration: none;
-          }
-
-          .logo {
-            margin-bottom: 2rem;
-          }
-
-          .logo img {
-            width: 300px;
-          }
-
-          .buttons {
-            display: grid;
-            grid-auto-flow: column;
-            grid-gap: 0.5rem;
-          }
-          .button {
-            font-size: 1rem;
-            background-color: #6700eb;
-            padding: 1rem 2rem;
-            color: #f4f4f4;
-            text-align: center;
-          }
-
-          .button.small {
-            padding: 0.5rem 1rem;
-          }
-
-          .button:hover {
-            background-color: #45009d;
-          }
-
-          .button-outline {
-            border: 2px solid #6700eb;
-            padding: 1rem 2rem;
-            color: #6700eb;
-            text-align: center;
-          }
-
-          .button-outline:hover {
-            border-color: #45009d;
-            color: #45009d;
-          }
-
-          pre {
-            background: #fafafa;
-            border-radius: 5px;
-            padding: 0.75rem;
-            text-align: center;
-          }
-          code {
-            font-size: 0.9rem;
-            font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-              Bitstream Vera Sans Mono, Courier New, monospace;
-          }
-
-          .grid {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
-
-            max-width: 800px;
-            margin-top: 3rem;
-          }
-
-          @media (max-width: 600px) {
-            .grid {
-              width: 100%;
-              flex-direction: column;
-            }
-          }
-        `}</style>
+    <div id="loader-wrap">
+      {typeof window !== 'undefined' ? <Snowfall /> : null}
+      <div className="loader ready">
+        <img className="mono-loader" width="100px" src="/images/border-monogram-white.svg" />
+        <img className="r" width="50px" src="/images/r.svg" />
+        <p style={{ marginTop: 10, marginBottom: 5 }}>ADVENT 2022</p>
+        <p style={{ opacity: 0.5 }}>BEGINS 2022/12/01</p>
       </div>
+      <style jsx>{`
+  #loader-wrap {
+    font-family: 'Roboto', sans-serif;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background: black;
+
+      background: linear-gradient(-45deg, #3c4775, #131525, #202952, #140f0e);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+      height: 100vh;
+
+  }
+    @keyframes gradient {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+  #loader-wrap .loader {
+    margin: auto;
+    position: absolute;
+    text-align: center;
+    width: 200px;
+    height: 200px;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+
+  .loader p {
+    color: #e4e4e4;
+    font-size: 0.7rem;
+    margin-top: 0;
+    opacity: 0.8;
+  }
+
+  #loader-wrap .loader .mono-loader {
+    animation: circle 20s linear infinite;
+    width: 125px;
+    height: 125px;
+    color: white;
+  }
+
+  #loader-wrap .loader .r {
+    position: absolute;
+    top: 28px;
+    left: 67px;
+    width: 70px;
+    height: 70px;
+    color: white;
+  }
+
+  @keyframes circle {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .spin {
+    animation-name: spin;
+    animation-duration: 2000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  `}</style>
+    </div>
+  )
+}
+
+const Home: BlitzPage = ({ days, ready }: { days: Day[], ready: boolean }) => {
+  if (!ready) {
+    return <ComingSoon />
+  }
+
+  return (
+    <Layout title="Advent 2022 by Revolver">
+      <main>
+        <div className="buttons" style={{ marginTop: "1rem", marginBottom: "1rem" }}>
+          <Suspense fallback="Loading...">
+            <UserInfo />
+          </Suspense>
+        </div>
+        <Days days={days} />
+      </main>
+
+      <footer>
+      </footer>
     </Layout>
   )
 }
