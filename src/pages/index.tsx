@@ -120,7 +120,7 @@ const ComingSoon = () => {
     z-index: 9999;
     background: black;
 
-      background: linear-gradient(-45deg, #3c4775, #131525, #202952, #140f0e);
+      background: linear-gradient(-45deg, #091132,  #0e1534, #140f0e);
       background-size: 400% 400%;
       animation: gradient 15s ease infinite;
       height: 100vh;
