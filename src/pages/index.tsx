@@ -12,10 +12,8 @@ import { Routes, BlitzPage } from "@blitzjs/next"
 import getDays from "src/days/queries/getDays"
 import { gSSP } from "src/blitz-server"
 import ipLookup from 'request-ip';
-import geoip from 'geoip-lite';
 import moment from 'moment-timezone';
 import Snowfall from "react-snowfall"
-import Countdown from "react-countdown"
 
 const Days = ({ days }) => {
   return (
@@ -67,7 +65,7 @@ const UserInfo = () => {
 
 export const getServerSideProps = gSSP<any, any, { days: Day[] | [], ready: boolean }>(async ({ req, params, ctx }) => {
   const ip = process.env.FAKE_IP || ipLookup.getClientIp(req);
-  const tz = ip && geoip.lookup(ip)?.timezone || 'America/Los_Angeles';
+  const tz = 'America/Los_Angeles';//ip && geoip.lookup(ip)?.timezone || 'America/Los_Angeles';
 
   const start = moment.tz(process.env.BEGIN_DATE, tz);
   const today = process.env.FAKE_TODAY ? moment.tz(process.env.FAKE_TODAY, tz) : moment.tz(tz);
