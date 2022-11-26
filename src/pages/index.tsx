@@ -5,7 +5,6 @@ import moment from 'moment-timezone';
 import Image from 'next/image';
 import { Suspense, useEffect, useState } from "react";
 import Snowfall from "react-snowfall";
-import ipLookup from 'request-ip';
 import { gSSP } from "src/blitz-server";
 import { ComingSoon } from "src/core/components/ComingSoon";
 import Layout from "src/core/layouts/Layout";
@@ -64,8 +63,7 @@ const Days = ({ days }) => {
   )
 }
 
-export const getServerSideProps = gSSP(async ({ req, params, ctx }) => {
-  const ip = process.env.FAKE_IP || ipLookup.getClientIp(req);
+export const getServerSideProps = gSSP<any, any, any>(async ({ req, ctx }) => {
   //todo: vercel 50mb limit
   const tz = 'America/Los_Angeles';//ip && geoip.lookup(ip)?.timezone || 'America/Los_Angeles';
 
@@ -103,7 +101,7 @@ export const getServerSideProps = gSSP(async ({ req, params, ctx }) => {
 })
 
 const Home: BlitzPage = (props: ReturnType<typeof getServerSideProps>) => {
-  const { ready, days } = props;
+  const { ready, days } = props as any;
   const user = useCurrentUser();
   if (!ready && !user) {
     return <ComingSoon />
