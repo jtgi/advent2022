@@ -1,82 +1,70 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable jsx-a11y/alt-text */
-import { Suspense } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import Layout from "src/core/layouts/Layout"
-import { useCurrentUser } from "src/users/hooks/useCurrentUser"
-import logout from "src/auth/mutations/logout"
-import logo from "public/logo.png"
-import { useMutation, useQuery } from "@blitzjs/rpc"
-import { Routes, BlitzPage } from "@blitzjs/next"
-import getDays from "src/days/queries/getDays"
-import { gSSP } from "src/blitz-server"
-import ipLookup from 'request-ip';
+import { BlitzPage } from "@blitzjs/next";
 import moment from 'moment-timezone';
-import Snowfall from "react-snowfall"
-import { ComingSoon } from "src/core/components/ComingSoon"
+import Image from 'next/image';
+import { Suspense, useEffect, useState } from "react";
+import Snowfall from "react-snowfall";
+import ipLookup from 'request-ip';
+import { gSSP } from "src/blitz-server";
+import { ComingSoon } from "src/core/components/ComingSoon";
+import Layout from "src/core/layouts/Layout";
+import getDays from "src/days/queries/getDays";
+import { useCurrentUser } from "src/users/hooks/useCurrentUser";
+import { EffectCoverflow, Keyboard } from "swiper";
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+
 const Days = ({ days }) => {
+  const height = useInnerHeight();
+
   return (
-    <div>
-      days
+    <div style={{ height }}>
       <Swiper
-        spaceBetween={50}
-        slidesPerView={1}
-        onSlideChange={() => console.log('slide change')}
+        className="p-12 m-auto w-full h-full"
+        effect="coverflow"
+        grabCursor={true}
+        centeredSlides={true}
+        centerInsufficientSlides={true}
+        slidesPerView={'auto'}
+        spaceBetween={30}
+        keyboard={{ enabled: true }}
+        centeredSlidesBounds={true}
+        coverflowEffect={{
+          slideShadows: false,
+          rotate: 20,
+          stretch: 10,
+          depth: 200,
+          modifier: 1,
+        }}
+        pagination={false}
+        modules={[EffectCoverflow, Keyboard]}
       >
-        {days.map(day =>
-          <SwiperSlide key={day.id}>
-            <div style={{ width: 100, height: 100, backgroundColor: 'orange' }}>{day.coffee}</div>
-          </SwiperSlide>
-        )}
+        {days.map((day) => {
+          const date = new Date(day.date).getDate();
+          return (
+            <SwiperSlide key={day.id} className="text-white ">
+              <div className="md:max-w-[600px] md:max-h-[600px] max-h-[500px] min-w-[300px] w-full h-full absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 m-auto overflow-hidden shadow-2xl p-10 rounded-3xl bg-gradient-to-r to-[#0e1534] from-[#010229] ">
+                <div className="absolute w-full h-full">
+                  <Image className="opacity-10" src={`/images/numbers/highlighted/${date}.svg`} layout={"fill"} />
+                </div>
+                <div className="flex flex-col justify-end h-full w-full">
+                  <div>
+                    <h1 className="text-3xl md:text-6xl font-black">{day.coffee}</h1>
+                    <h2 className="text-lg md:text-2xl"><a target="_blank" href={day.roasterLink} rel="noreferrer">{day.roaster}</a></h2>
+                    <h2 className="text-lg md:text-2xl opacity-30">{day.location}</h2>
+                  </div>
+                </div>
+              </div>
+            </SwiperSlide>
+          )
+        })}
       </Swiper>
     </div>
   )
 }
 
-const UserInfo = () => {
-  const currentUser = useCurrentUser()
-  const [logoutMutation] = useMutation(logout)
-
-  if (currentUser) {
-    return (
-      <>
-        <button
-          className="button small"
-          onClick={async () => {
-            await logoutMutation()
-          }}
-        >
-          Logout
-        </button>
-        <div>
-          User id: <code>{currentUser.id}</code>
-          <br />
-          User role: <code>{currentUser.role}</code>
-        </div>
-      </>
-    )
-  } else {
-    return (
-      <>
-        <Link href={Routes.SignupPage()}>
-          <a className="button small">
-            <strong>Sign Up</strong>
-          </a>
-        </Link>
-        <Link href={Routes.LoginPage()}>
-          <a className="button small">
-            <strong>Login</strong>
-          </a>
-        </Link>
-      </>
-    )
-  }
-}
-
-export const getServerSideProps = gSSP<any, any, { days: Day[] | [], ready: boolean }>(async ({ req, params, ctx }) => {
+export const getServerSideProps = gSSP(async ({ req, params, ctx }) => {
   const ip = process.env.FAKE_IP || ipLookup.getClientIp(req);
   //todo: vercel 50mb limit
   const tz = 'America/Los_Angeles';//ip && geoip.lookup(ip)?.timezone || 'America/Los_Angeles';
@@ -100,7 +88,10 @@ export const getServerSideProps = gSSP<any, any, { days: Day[] | [], ready: bool
         { date: { gte: start.toDate() } },
         { date: { lte: today.toDate() } }
       ],
-    }
+    },
+    skip: undefined,
+    orderBy: undefined,
+    take: undefined
   }, ctx);
 
   return {
@@ -111,26 +102,40 @@ export const getServerSideProps = gSSP<any, any, { days: Day[] | [], ready: bool
   }
 })
 
-
-
-const Home: BlitzPage = ({ days, ready }: { days: Day[], ready: boolean }) => {
-  if (false && !ready) {
+const Home: BlitzPage = (props: ReturnType<typeof getServerSideProps>) => {
+  const { ready, days } = props;
+  const user = useCurrentUser();
+  if (!ready && !user) {
     return <ComingSoon />
   }
 
   return (
-    <Layout title="Advent 2022 by Revolver">
-      <main>
-        <Suspense fallback={<div>Loading...</div>}>
-          <UserInfo />
-        </Suspense>
+    <Layout title="Advent 2022 by Revolver" >
+      <Suspense>
+        <Snowfall />
         <Days days={days} />
-      </main>
 
       <footer>
       </footer>
+      </Suspense>
     </Layout>
   )
 }
+
+function useInnerHeight() {
+  const [height, setHeight] = useState("100%");
+
+  useEffect(() => {
+    const documentHeight = () => {
+      setHeight(window.innerHeight + 'px');
+    }
+    documentHeight();
+    window.addEventListener('resize', documentHeight);
+    return () => window.removeEventListener('resize', documentHeight);
+  }, [])
+
+  return height;
+}
+
 
 export default Home
