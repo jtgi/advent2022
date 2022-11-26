@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable jsx-a11y/alt-text */
+
 import { BlitzPage } from "@blitzjs/next";
 import moment from 'moment-timezone';
 import Image from 'next/image';
