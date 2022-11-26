@@ -4,13 +4,12 @@
 import { BlitzPage } from "@blitzjs/next";
 import moment from 'moment-timezone';
 import Image from 'next/image';
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Snowfall from "react-snowfall";
 import { gSSP } from "src/blitz-server";
 import { ComingSoon } from "src/core/components/ComingSoon";
 import Layout from "src/core/layouts/Layout";
 import getDays from "src/days/queries/getDays";
-import { useCurrentUser } from "src/users/hooks/useCurrentUser";
 import { EffectCoverflow, Keyboard } from "swiper";
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -103,20 +102,17 @@ export const getServerSideProps = gSSP<any, any, any>(async ({ req, ctx }) => {
 
 const Home: BlitzPage = (props: ReturnType<typeof getServerSideProps>) => {
   const { ready, days } = props as any;
-  const user = useCurrentUser();
-  if (!ready && !user) {
+  if (!ready) {
     return <ComingSoon />
   }
 
   return (
     <Layout title="Advent 2022 by Revolver" >
-      <Suspense>
         <Snowfall />
         <Days days={days} />
 
       <footer>
       </footer>
-      </Suspense>
     </Layout>
   )
 }
