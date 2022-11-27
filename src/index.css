@@ -2,10 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-html,
-body,
-html>div {
-  height: calc(var(--vh, 1vh) * 100);
+html {
+  @apply text-slate-800
 }
 
 body {
@@ -17,12 +15,11 @@ body {
 body,
 html,
 .root {
-  height: calc(var(--vh, 1vh) * 100);
+  height: 100%;
 }
 
 #__next {
   height: 100%;
-  height: calc(var(--vh, 1vh) * 100);
 }
 
 @keyframes gradient {

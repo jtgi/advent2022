@@ -1,9 +1,9 @@
-import { Suspense } from "react";
 import { Routes } from "@blitzjs/next";
+import { usePaginatedQuery } from "@blitzjs/rpc";
 import Head from "next/head";
 import Link from "next/link";
-import { usePaginatedQuery } from "@blitzjs/rpc";
 import { useRouter } from "next/router";
+import { Suspense } from "react";
 import Layout from "src/core/layouts/Layout";
 import getDays from "src/days/queries/getDays";
 
@@ -64,5 +64,7 @@ const DaysPage = () => {
     </Layout>
   );
 };
+
+DaysPage.authenticate = true;
 
 export default DaysPage;
