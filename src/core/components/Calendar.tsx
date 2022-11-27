@@ -1,9 +1,3 @@
-import { BlitzPage } from "@blitzjs/next";
-import Snowfall from "react-snowfall";
-import { ComingSoon } from "src/core/components/ComingSoon";
-import Layout from "src/core/layouts/Layout";
-import { fetchCalendarSSR } from "src/core/utils/calendar";
-
 /* eslint-disable jsx-a11y/alt-text */
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/20/solid';
 import Image from 'next/image';
@@ -13,7 +7,7 @@ import { useInnerHeight } from 'src/core/utils/hooks';
 import { EffectCoverflow, Keyboard, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-const Day = ({ days, targetDay }) => {
+export const Calendar = ({ days, targetDay }) => {
   const height = useInnerHeight();
   const ref = useRef<any>()
   const [showNav, setShowNav] = useState({ left: false, right: days.length > 1 })
@@ -78,23 +72,3 @@ const Day = ({ days, targetDay }) => {
     </div>
   )
 }
-
-
-export const getServerSideProps = fetchCalendarSSR;
-
-const Home: BlitzPage = (props: any) => {
-  const { ready, days, targetDay } = props as any;
-
-  if (!ready) {
-    return <ComingSoon />
-  }
-
-  return (
-    <Layout title="Advent 2022 by Revolver" >
-      <Snowfall />
-      <Day days={days} targetDay={targetDay - 1} />
-    </Layout>
-  )
-}
-
-export default Home
