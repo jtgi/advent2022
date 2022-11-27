@@ -15,6 +15,8 @@ export const fetchCalendarSSR = gSSP<any, any, any>(async ({ req, query, ctx }) 
   const today = process.env.FAKE_TODAY ? moment.tz(process.env.FAKE_TODAY, tz) : moment.tz(tz)
   const ready = today.isSameOrAfter(start, "day")
 
+  console.warn({ start, today, ready, tz, ip })
+
   if (!ready) {
     return {
       props: {
