@@ -4,8 +4,8 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Suspense } from "react";
+import AdminLayout from "src/core/layouts/AdminLayout";
 
-import Layout from "src/core/layouts/Layout";
 import { DayForm, FORM_ERROR } from "src/days/components/DayForm";
 import updateDay from "src/days/mutations/updateDay";
 import getDay from "src/days/queries/getDay";
@@ -79,6 +79,6 @@ const EditDayPage = () => {
 };
 
 EditDayPage.authenticate = true;
-EditDayPage.getLayout = (page) => <Layout>{page}</Layout>;
+EditDayPage.getLayout = (page) => <AdminLayout>{page}</AdminLayout>;
 
 export default EditDayPage;
