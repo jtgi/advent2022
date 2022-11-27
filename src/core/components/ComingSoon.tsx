@@ -1,7 +1,7 @@
 
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable jsx-a11y/alt-text */
-//w/e
+
 import Snowfall from "react-snowfall"
 
 export const ComingSoon = () => {
@@ -67,6 +67,7 @@ export const ComingSoon = () => {
     width: 125px;
     height: 125px;
     color: white;
+    margin: 0 auto;
   }
 
   #loader-wrap .loader .r {

@@ -1,7 +1,11 @@
-import {ErrorFallbackProps, ErrorComponent, ErrorBoundary, AppProps} from "@blitzjs/next"
-import {AuthenticationError, AuthorizationError} from "blitz"
-import React from "react"
-import {withBlitz} from "src/blitz-client"
+import { AppProps, ErrorBoundary, ErrorComponent, ErrorFallbackProps } from "@blitzjs/next";
+import { AuthenticationError, AuthorizationError } from "blitz";
+import React from 'react';
+import { withBlitz } from "src/blitz-client";
+import 'swiper/css';
+import "swiper/css/effect-coverflow";
+import '../index.css';
+
 
 function RootErrorFallback({error}: ErrorFallbackProps) {
   if (error instanceof AuthenticationError) {
@@ -24,6 +28,8 @@ function RootErrorFallback({error}: ErrorFallbackProps) {
 }
 
 function MyApp({Component, pageProps}: AppProps) {
+  if (typeof window === "undefined") React.useLayoutEffect = () => { };
+
   const getLayout = Component.getLayout || ((page) => page)
   return (
     <ErrorBoundary FallbackComponent={RootErrorFallback}>
