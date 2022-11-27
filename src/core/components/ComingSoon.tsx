@@ -66,6 +66,7 @@ export const ComingSoon = () => {
     width: 125px;
     height: 125px;
     color: white;
+    margin: 0 auto;
   }
 
   #loader-wrap .loader .r {

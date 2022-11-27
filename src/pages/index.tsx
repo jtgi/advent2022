@@ -2,28 +2,51 @@
 /* eslint-disable jsx-a11y/alt-text */
 
 import { BlitzPage } from "@blitzjs/next";
+
+import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/20/solid';
 import moment from 'moment-timezone';
 import Image from 'next/image';
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Snowfall from "react-snowfall";
 import { gSSP } from "src/blitz-server";
 import { ComingSoon } from "src/core/components/ComingSoon";
 import Layout from "src/core/layouts/Layout";
 import getDays from "src/days/queries/getDays";
-import { EffectCoverflow, Keyboard } from "swiper";
+import { EffectCoverflow, Keyboard, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+const clx = (...args: string[]) => {
+  return args.filter(Boolean).join(' ')
+}
 
-const Days = ({ days }) => {
+const Days = ({ days, targetDay }) => {
   const height = useInnerHeight();
+  const ref = useRef<any>()
+  const [showNav, setShowNav] = useState({ left: false, right: days.length > 1 })
+
+  function onSlideChange() {
+    const swiper = ref.current.swiper;
+    const { activeIndex, isBeginning, isEnd } = swiper;
+    setShowNav({ left: !isBeginning, right: !isEnd })
+  }
 
   return (
     <div style={{ height }}>
+      <div className={clx("absolute right-10 top-1/2 -translate-y-1/2 text-3xl z-10 text-white rounded-full bg-slate-800 w-10 h-10 text-center flex justify-center items-center cursor-pointer hover:bg-slate-700 invisible", showNav.right ? 'md:visible' : 'invisible')} onClick={() => {
+        ref.current.swiper.slideNext();
+      }}><ArrowRightIcon className="w-5 h-5 text-blue-200" /></div>
+      <div className={clx("absolute left-10 top-1/2 -translate-y-1/2 text-3xl z-10 text-white rounded-full bg-slate-800 w-10 h-10 text-center flex justify-center items-center cursor-pointer hover:bg-slate-700 invisible", showNav.left ? 'md:visible' : 'invisible')} onClick={() => {
+        ref.current.swiper.slidePrev();
+      }}><ArrowLeftIcon className="w-5 h-5 text-blue-200" /></div>
       <Swiper
+        ref={ref}
+        initialSlide={targetDay}
         className="p-12 m-auto w-full h-full"
         effect="coverflow"
+        pagination={{ type: 'progressbar' }}
         grabCursor={true}
         centeredSlides={true}
+        onSlideChange={onSlideChange}
         centerInsufficientSlides={true}
         slidesPerView={'auto'}
         spaceBetween={30}
@@ -36,8 +59,7 @@ const Days = ({ days }) => {
           depth: 200,
           modifier: 1,
         }}
-        pagination={false}
-        modules={[EffectCoverflow, Keyboard]}
+        modules={[EffectCoverflow, Keyboard, Pagination, Navigation]}
       >
         {days.map((day) => {
           const date = new Date(day.date).getDate();
@@ -63,19 +85,32 @@ const Days = ({ days }) => {
   )
 }
 
+async function fetchTimezone(ip: string) {
+  return fetch(`https://geoip-pi.vercel.app/api/${ip}`)
+    .then((res) => res.json())
+    .then((data) => {
+      return data.timezone
+    })
+    .catch((err) => {
+      return undefined;
+    });
+}
+
 export const getServerSideProps = gSSP<any, any, any>(async ({ req, ctx }) => {
-  //todo: vercel 50mb limit
-  const tz = 'America/Los_Angeles';//ip && geoip.lookup(ip)?.timezone || 'America/Los_Angeles';
+  const forwarded = req.headers['x-forwarded-for'];
+  const ip = typeof forwarded === 'string' ? forwarded.split(/, /)[0] : req.socket.remoteAddress;
+  const tz = ip && await fetchTimezone(process.env.FAKE_IP || ip) || 'America/Los_Angeles';
 
   const start = moment.tz(process.env.BEGIN_DATE, tz);
   const today = process.env.FAKE_TODAY ? moment.tz(process.env.FAKE_TODAY, tz) : moment.tz(tz);
-  const ready = today.isSameOrAfter(start);
+  const ready = today.isSameOrAfter(start, 'day');
 
   if (!ready) {
     return {
       props: {
         days: [],
-        ready: false
+        ready: false,
+        targetDay: -1
       }
     }
   }
@@ -95,21 +130,23 @@ export const getServerSideProps = gSSP<any, any, any>(async ({ req, ctx }) => {
   return {
     props: {
       days,
-      ready
+      ready,
+      targetDay: today.date()
     }
   }
 })
 
 const Home: BlitzPage = (props: ReturnType<typeof getServerSideProps>) => {
-  const { ready, days } = props as any;
+  const { ready, days, targetDay } = props as any;
   if (!ready) {
     return <ComingSoon />
   }
 
   return (
     <Layout title="Advent 2022 by Revolver" >
-        <Snowfall />
-        <Days days={days} />
+
+      <Snowfall />
+      <Days days={days} targetDay={targetDay - 1} />
 
       <footer>
       </footer>

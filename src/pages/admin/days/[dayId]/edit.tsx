@@ -1,16 +1,15 @@
-import { Suspense } from "react";
-import { Routes } from "@blitzjs/next";
+import { Routes, useParam } from "@blitzjs/next";
+import { useMutation, useQuery } from "@blitzjs/rpc";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useQuery, useMutation } from "@blitzjs/rpc";
-import { useParam } from "@blitzjs/next";
+import { Suspense } from "react";
 
 import Layout from "src/core/layouts/Layout";
-import getDay from "src/days/queries/getDay";
-import updateDay from "src/days/mutations/updateDay";
 import { DayForm, FORM_ERROR } from "src/days/components/DayForm";
-import { CreateDay, UpdateDay } from "../../../days/validations";
+import updateDay from "src/days/mutations/updateDay";
+import getDay from "src/days/queries/getDay";
+import { CreateDay } from "../../../../days/validations";
 
 export const EditDay = () => {
   const router = useRouter();
