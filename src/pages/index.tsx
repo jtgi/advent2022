@@ -62,40 +62,33 @@ const Calendar = ({ days, targetDay }) => {
                   <Image className="opacity-10" src={`/images/numbers/highlighted/${index + 1}.svg`} layout={"fill"} />
                 </div>
 
-
-
-
-
-
-
-
-                <div className="flex flex-col justify-end h-full w-full">
+                <div className="flex flex-col justify-end h-full w-full space-y-3">
                   <div>
                     <h1 className="text-3xl md:text-6xl font-black">{day.coffee}</h1>
                     <h2 className="text-lg md:text-2xl"><a target="_blank" href={day.roasterLink} className="opacity-90" rel="noreferrer">{day.roaster}, <span className="opacity-70">{day.location}</span></a></h2>
                   </div>
 
                   <dl className="divide-y divide-gray-800">
-                    <div className="py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-3">
+                    <div className="py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-2">
                       <dt className="text-sm font-medium text-gray-700">Roaster Tasting Notes</dt>
                       <dd className="mt-1 flex text-sm text-gray-500 sm:col-span-2 sm:mt-0">
                         <span className="flex-grow">{day.tastingNotes}</span>
                       </dd>
                     </div>
 
-                    <div className="py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-3">
+                    <div className="py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-2">
                       <dt className="text-sm font-medium text-gray-700">Variety</dt>
                       <dd className="mt-1 flex text-sm text-gray-500 sm:col-span-2 sm:mt-0">
                         <span className="flex-grow">{day.varieties}</span>
                       </dd>
                     </div>
 
-                    {(day.roasterLink || day.coffeeLink || day.videoLink) && <div className="py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-3">
+                    {(day.roasterLink || day.coffeeLink || day.videoLink) && <div className="py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-2">
                       <dt className="text-sm font-medium text-gray-700">More Info</dt>
                       <dd className="mt-1 flex text-sm text-gray-500 sm:col-span-2 sm:mt-0 space-x-5">
-                        {day.roasterLink && <a target="_blank" className="block" href={day.roasterLink} rel="noreferrer"><LinkIcon className="inline w-3 h-3" /> Roaster</a>}
-                        {day.coffeeLink && <a target="_blank" className="block" href={day.coffeeLink} rel="noreferrer"><LinkIcon className="inline w-3 h-3" /> Coffee</a>}
-                        {day.videoLink && <a target="_blank" className="block" href={day.videoLink} rel="noreferrer"><LinkIcon className="inline w-3 h-3" /> Video</a>}
+                        {day.roasterLink && <a target="_blank" className="block" href={day.roasterLink} rel="noreferrer">Roaster <LinkIcon className="inline w-3 h-3" /></a>}
+                        {day.coffeeLink && <a target="_blank" className="block" href={day.coffeeLink} rel="noreferrer">Coffee <LinkIcon className="inline w-3 h-3" /></a>}
+                        {day.videoLink && <a target="_blank" className="block" href={day.videoLink} rel="noreferrer">Video <LinkIcon className="inline w-3 h-3" /></a>}
                       </dd>
                     </div>}
                   </dl>
