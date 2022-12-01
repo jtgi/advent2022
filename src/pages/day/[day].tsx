@@ -4,7 +4,7 @@ import { ComingSoon } from "src/core/components/ComingSoon";
 import Layout from "src/core/layouts/Layout";
 import { fetchCalendarSSR } from "src/core/utils/calendar";
 
-import { ArrowLeftIcon, ArrowRightIcon, LinkIcon } from "@heroicons/react/20/solid";
+import { ArrowLeftIcon, ArrowRightIcon, ArrowUpRightIcon } from "@heroicons/react/20/solid";
 import Image from 'next/image';
 import { useRef, useState } from "react";
 import { clx } from "src/core/utils/common";
@@ -86,12 +86,12 @@ const Calendar = ({ days, targetDay }) => {
                       </dd>
                     </div>
 
-                    {(day.roasterLink || day.coffeeLink || day.videoLink) && <div className="py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-2">
+                    {(day.roasterLink || day.coffeeLink || day.videoLink) && <div className="py-1 relative z-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-2">
                       <dt className="text-sm font-medium text-gray-700">More Info</dt>
                       <dd className="mt-1 flex text-sm text-gray-500 sm:col-span-2 sm:mt-0 space-x-5">
-                        {day.roasterLink && <a target="_blank" className="block" href={day.roasterLink} rel="noreferrer">Roaster <LinkIcon className="inline w-3 h-3" /></a>}
-                        {day.coffeeLink && <a target="_blank" className="block" href={day.coffeeLink} rel="noreferrer">Coffee <LinkIcon className="inline w-3 h-3" /></a>}
-                        {day.videoLink && <a target="_blank" className="block" href={day.videoLink} rel="noreferrer">Video <LinkIcon className="inline w-3 h-3" /></a>}
+                        {day.roasterLink && <a target="_blank" className="block" href={day.roasterLink} rel="noreferrer">Roaster<ArrowUpRightIcon className="inline w-4 h-4" /></a>}
+                        {day.coffeeLink && <a target="_blank" className="block" href={day.coffeeLink} rel="noreferrer">Coffee<ArrowUpRightIcon className="inline w-4 h-4" /></a>}
+                        {day.videoLink && <a target="_blank" className="block" href={day.videoLink} rel="noreferrer">Video<ArrowUpRightIcon className="inline w-4 h-4" /></a>}
                       </dd>
                     </div>}
                   </dl>
