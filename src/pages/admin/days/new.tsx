@@ -2,7 +2,7 @@ import { Routes } from "@blitzjs/next";
 import { useMutation } from "@blitzjs/rpc";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Layout from "src/core/layouts/Layout";
+import AdminLayout from "src/core/layouts/AdminLayout";
 import { DayForm, FORM_ERROR } from "src/days/components/DayForm";
 import createDay from "src/days/mutations/createDay";
 import { CreateDay } from "../../../days/validations";
@@ -12,7 +12,7 @@ const NewDayPage = () => {
   const [createDayMutation] = useMutation(createDay);
 
   return (
-    <Layout title={"Create New Day"}>
+    <AdminLayout title={"Create New Day"}>
       <h1>Create New Day</h1>
 
       <DayForm
@@ -37,7 +37,7 @@ const NewDayPage = () => {
           <a>Days</a>
         </Link>
       </p>
-    </Layout>
+    </AdminLayout>
   );
 };
 

@@ -2,7 +2,12 @@
 
 This is a [Blitz.js](https://github.com/blitz-js/blitz) app.
 
-# ****name****
+## TODO
+-[] add meta tags
+-[] add revolver footer
+-[] add game genie
+-[] add other data?
+-[] add poap?
 
 ## Getting Started
 

@@ -1,6 +1,6 @@
-import { useState, ReactNode, PropsWithoutRef } from "react"
-import { FormProvider, useForm, UseFormProps } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { PropsWithoutRef, ReactNode, useState } from "react"
+import { FormProvider, useForm, UseFormProps } from "react-hook-form"
 import { z } from "zod"
 
 export interface FormProps<S extends z.ZodType<any, any>>
@@ -65,7 +65,7 @@ export function Form<S extends z.ZodType<any, any>>({
         )}
 
         {submitText && (
-          <button type="submit" disabled={ctx.formState.isSubmitting}>
+          <button type="submit" className="p-4 border border-white bg-green-300" disabled={ctx.formState.isSubmitting}>
             {submitText}
           </button>
         )}

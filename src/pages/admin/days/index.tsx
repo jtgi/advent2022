@@ -4,7 +4,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Suspense } from "react";
-import Layout from "src/core/layouts/Layout";
+import AdminLayout from "src/core/layouts/AdminLayout";
 import getDays from "src/days/queries/getDays";
 
 const ITEMS_PER_PAGE = 100;
@@ -45,7 +45,7 @@ export const DaysList = () => {
 
 const DaysPage = () => {
   return (
-    <Layout>
+    <AdminLayout>
       <Head>
         <title>Days</title>
       </Head>
@@ -61,7 +61,7 @@ const DaysPage = () => {
           <DaysList />
         </Suspense>
       </div>
-    </Layout>
+    </AdminLayout>
   );
 };
 

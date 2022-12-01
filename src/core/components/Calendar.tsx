@@ -8,9 +8,10 @@ import { EffectCoverflow, Keyboard, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 export const Calendar = ({ days, targetDay }) => {
-  const height = useInnerHeight();
   const ref = useRef<any>()
   const [showNav, setShowNav] = useState({ left: false, right: days.length > 1 })
+
+  const height = useInnerHeight();
 
   function onSlideChange() {
     const swiper = ref.current.swiper;
