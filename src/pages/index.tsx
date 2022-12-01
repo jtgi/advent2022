@@ -112,6 +112,7 @@ export const getServerSideProps = fetchCalendarSSR;
 const Home: BlitzPage = (props: any) => {
   const { ready, days, targetDay } = props as any;
   const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const seen = !!window.localStorage.getItem("showWelcome")
@@ -119,11 +120,16 @@ const Home: BlitzPage = (props: any) => {
       window.localStorage.setItem("showWelcome", "true");
       setShow(true)
     }
+    setLoading(false);
   }, [])
 
 
   if (!ready) {
     return <ComingSoon />
+  }
+
+  if (loading) {
+    return <Layout title="Advent 2022 by Revolver"><></></Layout>
   }
 
   return (
