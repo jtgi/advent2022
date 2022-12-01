@@ -156,7 +156,7 @@ const Home: BlitzPage = (props: any) => {
 
 function Welcome({ onClose }: { onClose?: () => void }) {
   return (
-    <div className="z-40 relative opacity-90 md:max-w-[600px] min-w-[300px] w-full h-full mx-auto mt-10 mb-40 shadow-2xl p-10 rounded-3xl space-y-6">
+    <div className="z-40 relative opacity-90 md:max-w-[600px] min-w-[300px] w-full h-full mx-auto mt-10 mb-40 p-10 rounded-3xl space-y-6">
       <div><Image className="block my-6 invert opacity-60" src="/images/monogram.svg" width={80} height={80} /></div>
 
       <div className="prose prose-sm text-slate-400">
