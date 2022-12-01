@@ -115,7 +115,7 @@ const Day: BlitzPage = (props: any) => {
 
   return (
     <Layout title="Advent 2022 by Revolver" >
-      <Snowfall />
+      <Snowfall snowflakeCount={60} />
       <Calendar days={days} targetDay={targetDay - 1} />
     </Layout>
   )

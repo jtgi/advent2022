@@ -135,7 +135,7 @@ const Home: BlitzPage = (props: any) => {
         </>
       ) : (
         <>
-            <Snowfall />
+            <Snowfall snowflakeCount={60} />
       <div className="relative w-full">
               <Calendar days={days} targetDay={targetDay} />
       </div>
