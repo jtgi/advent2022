@@ -114,7 +114,11 @@ const Home: BlitzPage = (props: any) => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    setShow(!window.localStorage.getItem("showWelcome"))
+    const seen = !!window.localStorage.getItem("showWelcome")
+    if (!seen) {
+      window.localStorage.setItem("showWelcome", "true");
+      setShow(true)
+    }
   }, [])
 
 
