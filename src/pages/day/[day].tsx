@@ -63,7 +63,7 @@ const Calendar = ({ days, targetDay }) => {
             <SwiperSlide key={day.id} className="text-white ">
               <div className="md:max-w-[600px] md:max-h-[600px] max-h-[500px] min-w-[300px] w-full h-full absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 m-auto overflow-hidden shadow-2xl p-10 rounded-3xl bg-gradient-to-r to-[#0e1534] from-[#010229] ">
                 <div className="absolute w-full h-full">
-                  <Image className="opacity-10" src={`/images/numbers/highlighted/${date}.svg`} layout={"fill"} />
+                  <Image alt="goaway" className="opacity-10" src={`/images/numbers/highlighted/${date}.svg`} layout={"fill"} />
                 </div>
                 <div className="flex flex-col justify-end h-full w-full">
                   <div>
