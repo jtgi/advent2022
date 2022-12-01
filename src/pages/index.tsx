@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable jsx-a11y/alt-text */
 import { BlitzPage } from "@blitzjs/next";
 import Snowfall from "react-snowfall";
@@ -121,7 +122,7 @@ const Home: BlitzPage = (props: any) => {
 
   useEffect(() => {
     setShow(!window.localStorage.getItem("showWelcome"))
-  })
+  }, [])
 
 
   if (!ready) {
