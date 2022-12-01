@@ -74,5 +74,7 @@ model Day {
   coffee       String
   tastingNotes String
   varieties    String
-  roasterLink  String
+  roasterLink  String? @default("")
+  coffeeLink   String? @default("")
+  videoLink    String? @default("")
 }

@@ -1,7 +1,7 @@
-import { forwardRef, PropsWithoutRef, ComponentPropsWithoutRef } from "react"
-import { Controller, useFormContext } from "react-hook-form"
-import { ErrorMessage } from "@hookform/error-message"
+import { ErrorMessage } from "@hookform/error-message";
+import { ComponentPropsWithoutRef, forwardRef, PropsWithoutRef } from "react";
 import DatePicker from 'react-datepicker';
+import { Controller, useFormContext } from "react-hook-form";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -31,6 +31,7 @@ export const LabeledTextField = forwardRef<HTMLInputElement, LabeledTextFieldPro
               return (
                 <DatePicker
                   disabled={isSubmitting}
+                  className='text-black'
                   onChange={onChange}
                   selected={value}
                   placeholderText={props.placeholder}
@@ -63,6 +64,7 @@ export const LabeledTextField = forwardRef<HTMLInputElement, LabeledTextFieldPro
             padding: 0.25rem 0.5rem;
             border-radius: 3px;
             border: 1px solid purple;
+            color: black;
             appearance: none;
             margin-top: 0.5rem;
           }
