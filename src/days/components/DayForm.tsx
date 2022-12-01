@@ -6,7 +6,7 @@ export { FORM_ERROR } from "src/core/components/Form";
 
 export function DayForm<S extends z.ZodType<any, any>>(props: FormProps<S>) {
   return (
-    <Form<S> {...props}>
+    <Form<S> {...props} className="text-black">
       <LabeledDatePicker name="date" label="Date" placeholder={"Choose Date..."} />
       <LabeledTextField name="coffee" label="Coffee" placeholder="El Tiberon, McFentia" />
       <LabeledTextField name="roaster" label="Roaster" placeholder="Intelligentsia" />
