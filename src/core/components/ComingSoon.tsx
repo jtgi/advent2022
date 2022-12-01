@@ -1,6 +1,7 @@
 
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable jsx-a11y/alt-text */
+
 import Snowfall from "react-snowfall"
 
 export const ComingSoon = () => {
