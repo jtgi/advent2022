@@ -9,13 +9,20 @@ export const fetchCalendarSSR = gSSP<any, any, any>(async ({ req, res, query, ct
   let ip =
     process.env.FAKE_IP ??
     (typeof forwarded === "string" ? forwarded.split(/, /)[0] : req.socket.remoteAddress)
-  let tz = (ip && (await fetchTimezone(ip))) || "America/Los_Angeles"
+
+  let tz = req.headers["x-vercel-ip-timezone"] as string
+  if (!tz) {
+    tz = ip && (await fetchTimezone(ip))
+  }
+  if (!tz) {
+    tz = "America/Los_Angeles"
+  }
 
   const start = moment.utc(process.env.BEGIN_DATE)
   const today = process.env.FAKE_TODAY ? moment.utc(process.env.FAKE_TODAY) : moment.utc()
   const ready = today.tz(tz).isSameOrAfter(start.tz(tz), "day")
 
-  console.warn({ start, today, ready, tz, ip })
+  console.warn({ start, startTz: start.tz(tz), today, todayTz: today.tz(tz), ready, tz, ip })
 
   if (!ready) {
     return {
@@ -27,20 +34,23 @@ export const fetchCalendarSSR = gSSP<any, any, any>(async ({ req, res, query, ct
     }
   }
 
-  const { days: allDays } = await getDays({}, ctx)
-  const days = allDays.filter((d) => {
-    return moment.utc(d.date).tz(tz).isSameOrBefore(today.tz(tz), "day")
-  })
+  const { days } = await getDays(
+    {
+      where: {},
+      skip: undefined,
+      orderBy: { date: "asc" },
+      take: 24,
+    },
+    ctx
+  )
 
-  console.warn(days.map((d) => ({ date: d.date, dates: d.date.toString(), coffee: d.coffee })))
-
-  res.setHeader("Cache-Control", "no-cache, no-store, max-age=0, must-revalidate")
+  days.forEach((d) => console.warn(d.date, d.coffee))
 
   return {
     props: {
       days,
       ready,
-      targetDay: day === -1 ? today.date() : Math.min(today.date(), day),
+      targetDay: day,
     },
   }
 })

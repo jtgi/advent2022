@@ -33,7 +33,7 @@ const Calendar = ({ days, targetDay }) => {
       }}><ArrowLeftIcon className="w-5 h-5 text-blue-200" /></div>
       <Swiper
         ref={ref}
-        initialSlide={targetDay}
+        initialSlide={targetDay - 1}
         className="p-12 m-auto w-full h-full"
         effect="coverflow"
         pagination={{ type: 'progressbar' }}
@@ -146,9 +146,13 @@ const Home: BlitzPage = (props: any) => {
       ) : (
         <>
             <Snowfall snowflakeCount={60} />
-      <div className="relative w-full">
-              <Calendar days={days} targetDay={targetDay} />
-      </div>
+            <div className="relative w-full">
+              <Calendar days={days.filter(d => {
+                const day = parseInt(d.date.substring(8, 10))
+                const today = new Date().getDate();
+                return day <= today;
+              })} targetDay={targetDay === -1 ? new Date().getDate() : targetDay} />
+            </div>
 
         </>
       )}
