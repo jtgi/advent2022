@@ -3,7 +3,7 @@ import { gSSP } from "src/blitz-server"
 import { fetchTimezone } from "src/core/utils/timezone"
 import getDays from "src/days/queries/getDays"
 
-export const fetchCalendarSSR = gSSP<any, any, any>(async ({ req, query, ctx }) => {
+export const fetchCalendarSSR = gSSP<any, any, any>(async ({ req, res, query, ctx }) => {
   const day = query.day ? parseInt(query.day as string) : -1
   const forwarded = req.headers["x-forwarded-for"]
   let ip =
@@ -39,7 +39,10 @@ export const fetchCalendarSSR = gSSP<any, any, any>(async ({ req, query, ctx }) 
     ctx
   )
 
-  //TODO: y u no work; days is off by one
+  console.warn(days.map((d) => ({ date: d.date, coffee: d.coffee })))
+
+  res.setHeader("Cache-Control", "no-cache, no-store, max-age=0, must-revalidate")
+
   return {
     props: {
       days,
