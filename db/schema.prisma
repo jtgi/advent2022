@@ -72,9 +72,9 @@ model Day {
   gm           String? @default("gm")
   roaster      String
   location     String
+  processing   String? @default("")
   coffee       String
   tastingNotes String
-  processingMethod String? @default("")
   varieties    String
   roasterLink  String? @default("")
   coffeeLink   String? @default("")

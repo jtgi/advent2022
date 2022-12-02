@@ -75,7 +75,7 @@ const Calendar = ({ days, targetDay }) => {
                     <div className="py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-2">
                       <dt className="text-sm font-medium text-gray-700">Variety</dt>
                       <dd className="mt-1 flex text-sm text-gray-500 sm:col-span-2 sm:mt-0">
-                        <span className="flex-grow">{day.processingMethod ? `${day.processingMethod}, ` : ''}{day.varieties}</span>
+                        <span className="flex-grow">{day.processing ? `${day.processing}, ` : ''}{day.varieties}</span>
                       </dd>
                     </div>
 

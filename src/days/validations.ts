@@ -8,7 +8,7 @@ export const UpdateDay = z.object({
   coffee: z.string(),
   tastingNotes: z.string(),
   varieties: z.string(),
-  processingMethod: z.any().optional(),
+  processing: z.any().optional(),
   roasterLink: z.any().optional(),
   coffeeLink: z.any().optional(),
   videoLink: z.any().optional(),
@@ -22,7 +22,7 @@ export const CreateDay = z.object({
   tastingNotes: z.string(),
   varieties: z.string(),
   roasterLink: z.any().optional(),
-  processingMethod: z.any().optional(),
+  processing: z.any().optional(),
   coffeeLink: z.any().optional(),
   videoLink: z.any().optional(),
 })
