@@ -62,32 +62,32 @@ const Calendar = ({ days, targetDay }) => {
             <SwiperSlide key={day.id} className="text-white ">
               <div className="md:max-w-[600px] md:max-h-[600px] max-h-[500px] min-w-[300px] w-full h-full absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 m-auto overflow-hidden shadow-2xl p-10 rounded-3xl bg-gradient-to-r to-[#0e1534] from-[#010229] ">
                 <div className="absolute w-full h-full">
-                  <Image alt="10" className="opacity-10" src={`/images/numbers/highlighted/${index + 1}.svg`} layout={"fill"} />
+                  <Image className="opacity-10" src={`/images/numbers/highlighted/${index + 1}.svg`} layout={"fill"} />
                 </div>
 
                 <div className="flex flex-col justify-end h-full w-full space-y-3">
                   <div>
                     <h1 className="text-3xl md:text-6xl font-black">{day.coffee}</h1>
-                    <h2 className="text-lg md:text-2xl"><a target="_blank" href={day.roasterLink} className="opacity-90" rel="noreferrer">{day.roaster}, <span className="opacity-70">{day.location}</span></a></h2>
+                    <h2 className="text-lg md:text-2xl"><a target="_blank" href={day.roasterLink} className="opacity-90" rel="noreferrer">{day.roaster} • <span className="opacity-70">{day.location}</span></a></h2>
                   </div>
 
                   <dl className="divide-y divide-gray-800">
                     <div className="py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-2">
-                      <dt className="text-sm font-medium text-gray-700">Roaster Tasting Notes</dt>
+                      <dt className="text-sm font-medium text-gray-700">Variety</dt>
+                      <dd className="mt-1 flex text-sm text-gray-500 sm:col-span-2 sm:mt-0">
+                        <span className="flex-grow">{day.processingMethod ? `${day.processingMethod}, ` : ''}{day.varieties}</span>
+                      </dd>
+                    </div>
+
+                    <div className="py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-2">
+                      <dt className="text-sm font-medium text-gray-700">Roaster Notes</dt>
                       <dd className="mt-1 flex text-sm text-gray-500 sm:col-span-2 sm:mt-0">
                         <span className="flex-grow">{day.tastingNotes}</span>
                       </dd>
                     </div>
 
-                    <div className="py-1 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-2">
-                      <dt className="text-sm font-medium text-gray-700">Variety</dt>
-                      <dd className="mt-1 flex text-sm text-gray-500 sm:col-span-2 sm:mt-0">
-                        <span className="flex-grow">{day.varieties}</span>
-                      </dd>
-                    </div>
-
                     {(day.roasterLink || day.coffeeLink || day.videoLink) && <div className="py-1 relative z-50 sm:grid sm:grid-cols-3 sm:gap-4 sm:py-2">
-                      <dt className="text-sm font-medium text-gray-700">More Info</dt>
+                      <dt className="text-sm font-medium text-gray-700">Links</dt>
                       <dd className="mt-1 flex text-sm text-gray-500 sm:col-span-2 sm:mt-0 space-x-5">
                         {day.roasterLink && <a target="_blank" className="block" href={day.roasterLink} rel="noreferrer">Roaster<ArrowUpRightIcon className="inline w-4 h-4" /></a>}
                         {day.coffeeLink && <a target="_blank" className="block" href={day.coffeeLink} rel="noreferrer">Coffee<ArrowUpRightIcon className="inline w-4 h-4" /></a>}

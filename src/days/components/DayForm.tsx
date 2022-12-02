@@ -14,6 +14,7 @@ export function DayForm<S extends z.ZodType<any, any>>(props: FormProps<S>) {
       <LabeledTextField name="coffeeLink" label="Coffee Link" placeholder="link to learn more about the coffee" />
       <LabeledTextField name="location" label="Location" placeholder="Boulder, Colorado" />
       <LabeledTextField name="tastingNotes" label="Tasting Notes" placeholder="blue cheese, blue berry..." />
+      <LabeledTextField name="processingMethod" label="Processing Method" placeholder="washed" />
       <LabeledTextField name="varieties" label="Varieties" placeholder="Caturra, SL28" />
       <LabeledTextField name="videoLink" label="Video Link" placeholder="link to youtube video to learn more" />
     </Form>

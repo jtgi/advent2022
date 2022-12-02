@@ -11,9 +11,9 @@ export const fetchCalendarSSR = gSSP<any, any, any>(async ({ req, res, query, ct
     (typeof forwarded === "string" ? forwarded.split(/, /)[0] : req.socket.remoteAddress)
   let tz = (ip && (await fetchTimezone(ip))) || "America/Los_Angeles"
 
-  const start = moment.tz(process.env.BEGIN_DATE, tz)
-  const today = process.env.FAKE_TODAY ? moment.tz(process.env.FAKE_TODAY, tz) : moment.tz(tz)
-  const ready = today.isSameOrAfter(start, "day")
+  const start = moment.utc(process.env.BEGIN_DATE)
+  const today = process.env.FAKE_TODAY ? moment.utc(process.env.FAKE_TODAY) : moment.utc()
+  const ready = today.tz(tz).isSameOrAfter(start.tz(tz), "day")
 
   console.warn({ start, today, ready, tz, ip })
 
@@ -29,8 +29,7 @@ export const fetchCalendarSSR = gSSP<any, any, any>(async ({ req, res, query, ct
 
   const { days: allDays } = await getDays({}, ctx)
   const days = allDays.filter((d) => {
-    const date = d.date.getDate()
-    return today.date() >= date
+    return moment.utc(d.date).tz(tz).isSameOrBefore(today.tz(tz), "day")
   })
 
   console.warn(days.map((d) => ({ date: d.date, dates: d.date.toString(), coffee: d.coffee })))
