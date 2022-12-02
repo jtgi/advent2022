@@ -9,7 +9,6 @@ import AdminLayout from "src/core/layouts/AdminLayout";
 import { DayForm, FORM_ERROR } from "src/days/components/DayForm";
 import updateDay from "src/days/mutations/updateDay";
 import getDay from "src/days/queries/getDay";
-import { CreateDay } from "../../../../days/validations";
 
 export const EditDay = () => {
   const router = useRouter();
@@ -39,7 +38,6 @@ export const EditDay = () => {
           // TODO use a zod schema for form validation
           //  - Tip: extract mutation's schema into a shared `validations.ts` file and
           //         then import and use it here
-          schema={CreateDay}
           initialValues={day}
           onSubmit={async (values) => {
             try {

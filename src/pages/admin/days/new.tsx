@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import AdminLayout from "src/core/layouts/AdminLayout";
 import { DayForm, FORM_ERROR } from "src/days/components/DayForm";
 import createDay from "src/days/mutations/createDay";
-import { CreateDay } from "../../../days/validations";
 
 const NewDayPage = () => {
   const router = useRouter();
@@ -17,7 +16,6 @@ const NewDayPage = () => {
 
       <DayForm
         submitText="Create Day"
-        schema={CreateDay}
         initialValues={{}}
         onSubmit={async (values) => {
           try {
