@@ -69,6 +69,7 @@ model Day {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
   date         DateTime @db.Date
+  gm           String? @default("gm")
   roaster      String
   location     String
   coffee       String
