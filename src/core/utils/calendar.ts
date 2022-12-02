@@ -27,19 +27,13 @@ export const fetchCalendarSSR = gSSP<any, any, any>(async ({ req, res, query, ct
     }
   }
 
-  const { days } = await getDays(
-    {
-      where: {
-        AND: [{ date: { gte: start.toDate() } }, { date: { lte: today.toDate() } }],
-      },
-      skip: undefined,
-      orderBy: undefined,
-      take: undefined,
-    },
-    ctx
-  )
+  const { days: allDays } = await getDays({}, ctx)
+  const days = allDays.filter((d) => {
+    const date = d.date.getDate()
+    return today.date() >= date
+  })
 
-  console.warn(days.map((d) => ({ date: d.date, coffee: d.coffee })))
+  console.warn(days.map((d) => ({ date: d.date, dates: d.date.toString(), coffee: d.coffee })))
 
   res.setHeader("Cache-Control", "no-cache, no-store, max-age=0, must-revalidate")
 
