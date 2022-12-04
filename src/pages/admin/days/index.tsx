@@ -8,8 +8,7 @@ import AdminLayout from "src/core/layouts/AdminLayout";
 import getDays from "src/days/queries/getDays";
 
 const ITEMS_PER_PAGE = 100;
-
-export const DaysList = () => {
+const DaysList = () => {
   const router = useRouter();
   const page = Number(router.query.page) || 0;
   const [{ days, hasMore }] = usePaginatedQuery(getDays, {
@@ -23,26 +22,25 @@ export const DaysList = () => {
 
   return (
     <div>
-      <ul>
+      <ul className="list-none p-0">
         {days.map((day) => (
-          <li key={day.id}>
+          <li className="mb-1" key={day.id}>
             <Link href={Routes.ShowDayPage({ dayId: day.id })}>
-              <a>{day.coffee}</a>
+              <a className="text-blue-500 hover:underline">Day {day.date.toISOString()} – {day.coffee}</a>
             </Link>
           </li>
         ))}
       </ul>
 
-      <button disabled={page === 0} onClick={goToPreviousPage}>
+      <button className="inline-block mr-1" disabled={page === 0} onClick={goToPreviousPage}>
         Previous
       </button>
-      <button disabled={!hasMore} onClick={goToNextPage}>
+      <button className="inline-block mr-1" disabled={!hasMore} onClick={goToNextPage}>
         Next
       </button>
     </div>
   );
 };
-
 const DaysPage = () => {
   return (
     <AdminLayout>
