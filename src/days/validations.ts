@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const UpdateDay = z.object({
   id: z.number(),
-  date: z.date(),
+  date: z.date().optional(),
   roaster: z.string(),
   location: z.string(),
   coffee: z.string(),
@@ -15,7 +15,7 @@ export const UpdateDay = z.object({
 })
 
 export const CreateDay = z.object({
-  date: z.date(),
+  date: z.date().optional(),
   roaster: z.string(),
   location: z.string(),
   coffee: z.string(),
