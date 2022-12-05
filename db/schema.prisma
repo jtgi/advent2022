@@ -68,9 +68,9 @@ model Day {
   id           Int      @id @default(autoincrement())
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  date         DateTime @db.Date
-  gm           String? @default("gm")
+  date         DateTime? @db.Date
   roaster      String
+  day          Int @default(0)
   location     String
   processing   String? @default("")
   coffee       String

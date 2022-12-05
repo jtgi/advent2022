@@ -35,15 +35,13 @@ export const EditDay = () => {
 
         <DayForm
           submitText="Update Day"
-          // TODO use a zod schema for form validation
-          //  - Tip: extract mutation's schema into a shared `validations.ts` file and
-          //         then import and use it here
           initialValues={day}
           onSubmit={async (values) => {
             try {
               const updated = await updateDayMutation({
                 id: day.id,
                 ...values,
+                date: values.date.toISOString(),
               });
               await setQueryData(updated);
               await router.push(Routes.ShowDayPage({ dayId: updated.id }));

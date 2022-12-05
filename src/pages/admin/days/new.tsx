@@ -19,7 +19,10 @@ const NewDayPage = () => {
         initialValues={{}}
         onSubmit={async (values) => {
           try {
-            const day = await createDayMutation(values);
+            const day = await createDayMutation({
+              ...values,
+              date: values.date.toISOString(),
+            });
             await router.push(Routes.ShowDayPage({ dayId: day.id }));
           } catch (error: any) {
             console.error(error);
