@@ -41,6 +41,7 @@ export const EditDay = () => {
               const updated = await updateDayMutation({
                 id: day.id,
                 ...values,
+                day: parseInt(values.day),
                 date: values.date === "" ? Date.parse(new Date().toISOString()) : values.date,
               });
               await setQueryData(updated);
