@@ -41,6 +41,7 @@ export const EditDay = () => {
               const updated = await updateDayMutation({
                 id: day.id,
                 ...values,
+                date: values.date === "" ? Date.parse(new Date().toISOString()) : values.date,
               });
               await setQueryData(updated);
               await router.push(Routes.ShowDayPage({ dayId: updated.id }));

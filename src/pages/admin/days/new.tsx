@@ -21,6 +21,7 @@ const NewDayPage = () => {
           try {
             const day = await createDayMutation({
               ...values,
+              date: values.date === "" ? Date.parse(new Date().toISOString()) : values.date,
             });
             await router.push(Routes.ShowDayPage({ dayId: day.id }));
           } catch (error: any) {
