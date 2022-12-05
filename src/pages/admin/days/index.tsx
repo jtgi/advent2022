@@ -21,23 +21,25 @@ const DaysList = () => {
   const goToNextPage = () => router.push({ query: { page: page + 1 } });
 
   return (
-    <div>
+    <div className="space-y-4">
       <ul className="list-none p-0">
         {days.map((day) => (
           <li className="mb-1" key={day.id}>
             <Link href={Routes.ShowDayPage({ dayId: day.id })}>
-              <a className="text-blue-500 hover:underline">Day {day.date ? day.date.toISOString() : day.day || 0} – {day.coffee}</a>
+              <a className="text-blue-500 hover:underline">Day {day.day} – {day.coffee}</a>
             </Link>
           </li>
         ))}
       </ul>
 
-      <button className="inline-block mr-1" disabled={page === 0} onClick={goToPreviousPage}>
-        Previous
-      </button>
-      <button className="inline-block mr-1" disabled={!hasMore} onClick={goToNextPage}>
-        Next
-      </button>
+      <div>
+        <button className="inline-block mr-1 p-3 bg-slate-700" disabled={page === 0} onClick={goToPreviousPage}>
+          Previous
+        </button>
+        <button className="inline-block mr-1 p-3 bg-slate-700" disabled={!hasMore} onClick={goToNextPage}>
+          Next
+        </button>
+      </div>
     </div>
   );
 };
@@ -48,10 +50,10 @@ const DaysPage = () => {
         <title>Days</title>
       </Head>
 
-      <div>
+      <div className="space-y-5">
         <p>
           <Link href={Routes.NewDayPage()}>
-            <a>Create Day</a>
+            <a className="p-3 rounded bg-green-400">Create Day</a>
           </Link>
         </p>
 

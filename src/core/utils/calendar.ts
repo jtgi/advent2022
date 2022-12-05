@@ -38,7 +38,7 @@ export const fetchCalendarSSR = gSSP<any, any, any>(async ({ req, res, query, ct
     {
       where: {},
       skip: undefined,
-      orderBy: { date: "asc" },
+      orderBy: { day: "asc" },
       take: 24,
     },
     ctx

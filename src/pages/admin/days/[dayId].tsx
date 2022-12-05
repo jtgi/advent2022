@@ -1,14 +1,13 @@
-import { Suspense } from "react";
-import { Routes } from "@blitzjs/next";
+import { Routes, useParam } from "@blitzjs/next";
+import { useMutation, useQuery } from "@blitzjs/rpc";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useQuery, useMutation } from "@blitzjs/rpc";
-import { useParam } from "@blitzjs/next";
+import { Suspense } from "react";
 
 import Layout from "src/core/layouts/Layout";
-import getDay from "src/days/queries/getDay";
 import deleteDay from "src/days/mutations/deleteDay";
+import getDay from "src/days/queries/getDay";
 
 export const Day = () => {
   const router = useRouter();
@@ -22,8 +21,8 @@ export const Day = () => {
         <title>Day {day.id}</title>
       </Head>
 
-      <div>
-        <h1>Day {day.id}</h1>
+      <div className="space-y-4">
+        <h1 className="text-lg">Day {day.id}</h1>
         <pre>{JSON.stringify(day, null, 2)}</pre>
 
         <Link href={Routes.EditDayPage({ dayId: day.id })}>
@@ -49,7 +48,7 @@ export const Day = () => {
 
 const ShowDayPage = () => {
   return (
-    <div>
+    <div className="space-y-5">
       <p>
         <Link href={Routes.DaysPage()}>
           <a>Days</a>
