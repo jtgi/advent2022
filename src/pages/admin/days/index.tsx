@@ -26,7 +26,7 @@ const DaysList = () => {
         {days.map((day) => (
           <li className="mb-1" key={day.id}>
             <Link href={Routes.ShowDayPage({ dayId: day.id })}>
-              <a className="text-blue-500 hover:underline">Day {day.date.toISOString()} – {day.coffee}</a>
+              <a className="text-blue-500 hover:underline">Day {day.date ? day.date.toISOString() : day.day || 0} – {day.coffee}</a>
             </Link>
           </li>
         ))}

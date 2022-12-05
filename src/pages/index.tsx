@@ -148,7 +148,7 @@ const Home: BlitzPage = (props: any) => {
             <Snowfall snowflakeCount={60} />
             <div className="relative w-full">
               <Calendar days={days.filter(d => {
-                const day = parseInt(d.date.substring(8, 10))
+                const day = d.day ? d.day : parseInt(d.date?.substring(8, 10) || "0")
                 const today = new Date().getDate();
                 return day <= today;
               })} targetDay={targetDay === -1 ? new Date().getDate() : targetDay} />
