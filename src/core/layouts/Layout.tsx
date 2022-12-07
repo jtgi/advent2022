@@ -12,6 +12,7 @@ const Layout: BlitzLayout<{title?: string; children?: React.ReactNode}> = ({titl
       </Head>
 
       {children}
+
     </>
   )
 }

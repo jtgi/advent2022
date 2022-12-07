@@ -14,13 +14,20 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 const Calendar = ({ days, targetDay }) => {
   const ref = useRef<any>()
   const [showNav, setShowNav] = useState({ left: false, right: days.length > 1 })
+  const [height, setHeight] = useState<string>();
 
-  const height = useInnerHeight();
+  useEffect(() => {
+    setHeight(window.innerHeight + "px")
+  }, [])
 
   function onSlideChange() {
     const swiper = ref.current.swiper;
     const { activeIndex, isBeginning, isEnd } = swiper;
     setShowNav({ left: !isBeginning, right: !isEnd })
+  }
+
+  if (!height) {
+    return null;
   }
 
   return (
@@ -104,9 +111,8 @@ const Calendar = ({ days, targetDay }) => {
 }
 
 /* eslint-disable jsx-a11y/alt-text */
-import { ArrowLeftIcon, ArrowRightIcon, ArrowUpRightIcon } from "@heroicons/react/20/solid";
+import { ArrowDownIcon, ArrowLeftIcon, ArrowRightIcon, ArrowUpRightIcon } from "@heroicons/react/20/solid";
 import { clx } from "src/core/utils/common";
-import { useInnerHeight } from "src/core/utils/hooks";
 export const getServerSideProps = fetchCalendarSSR;
 
 const Home: BlitzPage = (props: any) => {
@@ -134,34 +140,21 @@ const Home: BlitzPage = (props: any) => {
 
   return (
     <Layout title="Advent 2022 by Revolver" >
-
-      {show ? (
-        <>
-          <Snowfall snowflakeCount={20} />
-          <Welcome onClose={() => {
-            setShow(false);
-            localStorage.setItem("showWelcome", "true");
-          }} />
-        </>
-      ) : (
-        <>
-            <Snowfall snowflakeCount={60} />
-            <div className="relative w-full">
-              <Calendar days={days.filter(d => {
-                const day = d.day ? d.day : parseInt(d.date?.substring(8, 10) || "0")
-                const today = new Date().getDate();
-                return day <= today;
-              })} targetDay={targetDay === -1 ? new Date().getDate() : targetDay} />
-            </div>
-
-        </>
-      )}
+      <Snowfall snowflakeCount={60} style={{ height: '100vh', position: 'fixed' }} />
+      <div className="relative w-full">
+        <Calendar days={days.filter(d => {
+          const day = d.day ? d.day : parseInt(d.date?.substring(8, 10) || "0")
+          const today = new Date().getDate();
+          return day <= today;
+        })} targetDay={targetDay === -1 ? new Date().getDate() : targetDay} />
+      </div>
+      <BrewingPointer />
+      <BrewingGuide />
     </Layout>
   )
 }
 
-
-function Welcome({ onClose }: { onClose?: () => void }) {
+export function Welcome({ onClose }: { onClose?: () => void }) {
   return (
     <div className="z-40 relative opacity-90 md:max-w-[600px] min-w-[300px] w-full h-full mx-auto mt-10 mb-40 p-10 rounded-3xl space-y-6">
       <div><Image className="block my-6 invert opacity-60" src="/images/monogram.svg" width={80} height={80} /></div>
@@ -190,15 +183,46 @@ function Welcome({ onClose }: { onClose?: () => void }) {
     </div>
   );
 }
-function Footer() {
+
+export function BrewingPointer() {
   return (
-    <div className="opacity-90 hover:opacity-100 flex items-center bg-[#42448c] p-3 rounded-xl">
+    <div className="absolute bottom-4 left-1/2 w-50 -translate-x-1/2 flex justify-center flex-col z-20 hover:opacity-100">
       <a
-        type="button"
-        className="relative inline-flex items-center text-slate-300 opacity-50 hover:opacity-100 text-sm font-medium "
+        className="text-slate-200 z-10 opacity-50 hover:opacity-100 text-sm font-bold "
       >
-        Brewing Guide
+        Brewing Guide <ArrowDownIcon className=" inline w-4 h-4 mx-auto text-slate-200 ml-1" />
+
       </a>
+    </div>
+  )
+}
+
+export function BrewingGuide() {
+  return (
+    <div className="prose prose-sm w-full mt-20 md:mx-auto p-10 drop-shadow-xl md:rounded-t-xl md:flex bg-gradient-to-b from-white to-slate-300">
+      <div className="md:text-right text-center border-b border-slate-300 md:w-[200px] md:mr-5 mb-6 md:border-none pt-2 text-slate-400">
+        <h1 className="text-5xl text-gray opacity-30">Tricolate Recipe</h1>
+        <p>20g Coffee / 320g Water</p>
+      </div>
+
+      <div className="text-slate-500">
+
+        <ol className="">
+          <li>Pre-Wet Filter</li>
+          <li>Start Timer</li>
+          <li>Pour 60g of Water</li>
+          <li>Swirl</li>
+          <li>Let Sit until timer reads 1 minute.</li>
+          <li>Add water until the scale reads 250g.</li>
+          <li>Swirl again.</li>
+          <li>Let sit for 10-15 seconds</li>
+          <li>Add water until scale reads 320g.</li>
+          <li>Swirl, last time.</li>
+          <li>Let it drain.</li>
+        </ol>
+        <p>Total brew time should be around 6:30.</p>
+      </div>
+
 
     </div>
   )

@@ -9,6 +9,7 @@ import Image from 'next/image';
 import { useRef, useState } from "react";
 import { clx } from "src/core/utils/common";
 import { useInnerHeight } from "src/core/utils/hooks";
+import { BrewingGuide, BrewingPointer } from "src/pages";
 import { EffectCoverflow, Keyboard, Navigation, Pagination } from "swiper";
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -116,11 +117,15 @@ const Day: BlitzPage = (props: any) => {
   return (
     <Layout title="Advent 2022 by Revolver" >
       <Snowfall snowflakeCount={60} />
+      <div className="relative w-full">
       <Calendar days={days.filter(d => {
         const day = d.day ? d.day : parseInt(d.date?.substring(8, 10) || "0")
         const today = new Date().getDate();
         return day <= today;
       })} targetDay={targetDay === -1 ? new Date().getDate() : targetDay} />
+      </div>
+      <BrewingPointer />
+      <BrewingGuide />
     </Layout>
   )
 }

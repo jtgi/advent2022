@@ -12,6 +12,7 @@ const seed = async () => {
 
     await db.day.create({
       data: {
+        day: i,
         date: `2022-12-${date}T06:17:41.000Z`,
         roaster: "Tomorrow Roasters",
         location: "Denver, Badsreg",
