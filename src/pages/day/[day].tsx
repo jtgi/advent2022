@@ -118,11 +118,7 @@ const Day: BlitzPage = (props: any) => {
     <Layout title="Advent 2022 by Revolver" >
       <Snowfall snowflakeCount={60} />
       <div className="relative w-full">
-      <Calendar days={days.filter(d => {
-        const day = d.day ? d.day : parseInt(d.date?.substring(8, 10) || "0")
-        const today = new Date().getDate();
-        return day <= today;
-      })} targetDay={targetDay === -1 ? new Date().getDate() : targetDay} />
+      <Calendar days={days} targetDay={targetDay === -1 ? 24 : targetDay} />
       </div>
       <BrewingPointer />
       <BrewingGuide />
